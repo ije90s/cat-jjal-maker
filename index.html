@@ -29,6 +29,14 @@
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <script type="text/babel">
+      const jsonLocalStorage = {
+        setItem: (key, value) => {
+          localStorage.setItem(key, JSON.stringify(value));
+        },
+        getItem: (key) => {
+          return JSON.parse(localStorage.getItem(key));
+        },
+      };
       console.log("야옹");
       
       const Title = (props) => {
@@ -101,16 +109,20 @@
         const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
         const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
 
-        const [counter, setCounter] = React.useState(1);
+        const [counter, setCounter] = React.useState(jsonLocalStorage.getItem('counter'));
         const [cat, setCat] = React.useState(CAT1);
-        const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
+        const [favorites, setFavorites] = React.useState(jsonLocalStorage.getItem('favorites') || []);
 
         function updateMainCat(){
-          setCounter(counter+1);
+          const nextCouter = counter+1;
+          setCounter(nextCouter);
           setCat(CAT2);
+          jsonLocalStorage.setItem('counter', nextCouter);
         };
         function handleHeartClick(){
-          setFavorites([...favorites, CAT3]);
+          const nextFavorites = [...favorites, cat];
+          setFavorites(nextFavorites);
+          jsonLocalStorage.setItem('favorites', nextFavorites);
         }
         return (
           <div>
