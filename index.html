@@ -54,25 +54,15 @@
         );
       }      
       
-      function Favorites(){
-        const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
-        const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
-        const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
-        const cats = [CAT1, CAT2];
+      function Favorites({favorites}){
         return (
           <ul className="favorites">
-            {cats.map(cat => <CatItem img={cat} key={cat} />)}
+            {favorites.map(cat => <CatItem img={cat} key={cat} />)}
         </ul>
         );
       }
 
-      const MainCard = ({img}) => {
-        function handleHeartClick(){
-          console.log("하트 눌렀음");
-        }
-        function handleHeartMouseOver(){
-          console.log("하트 스쳐 지나감");
-        }
+      const MainCard = ({img, handleHeartClick}) => {
         return (
           <div className="main-card">
           <img
@@ -80,28 +70,36 @@
             alt="고양이"
             width="400"
           />
-          <button onClick={handleHeartClick} onMouseOver={handleHeartMouseOver}>🤍</button>
+          <button onClick={handleHeartClick}>🤍</button>
         </div>
         );
       }
 
       const App = () => {
+        const CAT1 = "https://cataas.com/cat/60b73094e04e18001194a309/says/react";
+        const CAT2 = "https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn";
+        const CAT3 = "https://cataas.com/cat/595f280b557291a9750ebf65/says/JavaScript";
+
         const [counter, setCounter] = React.useState(1);
-        const [cat, setCat] = React.useState('https://cataas.com/cat/60b73094e04e18001194a309/says/react');
-        console.log("카운터", counter);
-        console.log("캣이미지", cat);
+        const [cat, setCat] = React.useState(CAT1);
+        const [favorites, setFavorites] = React.useState([CAT1, CAT2]);
+
         function handleFormSubmit(event){
           event.preventDefault();
           console.log("전송됨");
           setCounter(counter+1);
-          setCat('https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn');
+          setCat(CAT2);
         };
+        function handleHeartClick(){
+          console.log("하트 눌렀음");
+          setFavorites([...favorites, CAT3]);
+        }
         return (
           <div>
             <Title>{counter}번째 고양이 가라사대</Title>
             <Form handleFormSubmit={handleFormSubmit} />
-            <MainCard img={cat} />
-            <Favorites />
+            <MainCard img={cat} handleHeartClick={handleHeartClick} />
+            <Favorites favorites={favorites} />
           </div>
         );
       };
