@@ -37,11 +37,7 @@
         );
       };
 
-      const Form = () => {
-        function handleFormSubmit(event){
-          event.preventDefault();
-          console.log("전송됨");
-        };
+      const Form = ({handleFormSubmit}) => {
         return (
           <form onSubmit={handleFormSubmit}>
           <input type="text" name="name" placeholder="영어 대사를 입력해주세요" />
@@ -86,19 +82,30 @@
         );
       }
 
-      const app = (
-        <div>
-        <Title>1번째 고양이 가라사대</Title>
-        <Title>2번째 고양이 가라사대</Title>
-        <Form />
-        <MainCard img="https://cataas.com/cat/60b73094e04e18001194a309/says/react" />
-        <Favorites />
-        </div>
-      );
+      const App = () => {
+        const [counter, setCounter] = React.useState(1);
+        const [cat, setCat] = React.useState('https://cataas.com/cat/60b73094e04e18001194a309/says/react');
+        console.log("카운터", counter);
+        console.log("캣이미지", cat);
+        function handleFormSubmit(event){
+          event.preventDefault();
+          console.log("전송됨");
+          setCounter(counter+1);
+          setCat('https://cataas.com//cat/5e9970351b7a400011744233/says/inflearn');
+        };
+        return (
+          <div>
+            <Title>{counter}번째 고양이 가라사대</Title>
+            <Form handleFormSubmit={handleFormSubmit} />
+            <MainCard img={cat} />
+            <Favorites />
+          </div>
+        );
+      };
 
       const 여기다가그려 = document.querySelector('#app');
 
-      ReactDOM.render(app, 여기다가그려);
+      ReactDOM.render(<App />, 여기다가그려);
     </script>
   </body>
 </html>
