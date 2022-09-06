@@ -37,7 +37,14 @@
           return JSON.parse(localStorage.getItem(key));
         },
       };
-      console.log("야옹");
+
+      const fetchCat = async (text) => {
+      const OPEN_API_DOMAIN = "https://cataas.com";
+      const response = await fetch(`${OPEN_API_DOMAIN}/cat/says/${text}?json=true`);
+      const responseJson = await response.json();
+      return `${OPEN_API_DOMAIN}/${responseJson.url}`;
+      };
+
       
       const Title = (props) => {
         return (
@@ -64,7 +71,7 @@
             setErrorMsg('빈 값으로 만들 수 없습니다.'); 
             return;
           }
-          updateMainCat();
+          updateMainCat(value);
         }
         return (
           <form onSubmit={handleFormSubmit}>
@@ -113,10 +120,11 @@
         const [cat, setCat] = React.useState(CAT1);
         const [favorites, setFavorites] = React.useState(jsonLocalStorage.getItem('favorites') || []);
 
-        function updateMainCat(){
+        async function updateMainCat(value){
+          const newCat = await fetchCat(value);
+          setCat(newCat);
           const nextCouter = counter+1;
           setCounter(nextCouter);
-          setCat(CAT2);
           jsonLocalStorage.setItem('counter', nextCouter);
         };
         function handleHeartClick(){
