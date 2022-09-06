@@ -120,6 +120,15 @@
         const [cat, setCat] = React.useState(CAT1);
         const [favorites, setFavorites] = React.useState(jsonLocalStorage.getItem('favorites') || []);
 
+        async function setInitialCat(){
+          const newCat = await fetchCat('First cat');
+          setCat(newCat);         
+        }
+
+        React.useEffect(() => {
+          setInitialCat();
+        }, []);
+
         async function updateMainCat(value){
           const newCat = await fetchCat(value);
           setCat(newCat);
